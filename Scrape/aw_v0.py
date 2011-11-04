@@ -1,4 +1,5 @@
 ##Return Allergy Environmental Info
+# Input :
 
 import os, re, sys, urllib
 from geocode import geo
@@ -47,7 +48,15 @@ def aw_allergy(a_date, zip):
 	rp_value = re.findall(r'Rating: </span>([\d\s\.]+)<span class="ac">out of 10',utext_sub_rp)
 	allergy_count['ragweed_pollen'] = float(str(rp_value[0]).strip())
 
-	print allergy_count
+	#Tree Pollen
+	sub_start_tp = utext.index('<h4 class="lt">Tree Pollen</h4>')
+	sub_end_tp = utext.index('id="pollen-index-2" class="panel-sml health"')
+	utext_sub_tp = utext[sub_start_tp:sub_end_tp]
+	#print utext_sub_tp
+	tp_value = re.findall(r'Rating: </span>([\d\s\.]+)<span class="ac">out of 10',utext_sub_tp)
+	allergy_count['tree_pollen'] = float(str(tp_value[0]).strip())
+
+	
 	return allergy_count
 
 def aw_respitory(r_date, zip):
@@ -61,6 +70,7 @@ def main():
 	data_dict = {}
 	for z_code in zipcodes:
 		data_dict[z_code] = route(label,d_date,z_code)
+	print data_dict
 	return data_dict
 
 if __name__ == '__main__':
