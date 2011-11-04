@@ -1,6 +1,6 @@
 ##Return City, State from zip
 
-import os, re, sys, urllib
+import re, urllib
 
 
 
@@ -10,7 +10,8 @@ def geo(zip_geo):
 	urltext = urlfile.read()
 
 	sub = re.findall(r'formatted_address" : "([\w\s\.]+), (\w\w) (\d\d\d\d\d)',urltext)
-	print sub
+	#print sub
+	return sub[:1]
  
 
 # def valid_HTML(urlfile):
