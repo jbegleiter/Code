@@ -11,7 +11,7 @@ def geo(zip_geo):
 
 	sub = re.findall(r'formatted_address" : "([\w\s\.]+), (\w\w) (\d\d\d\d\d)',urltext)
 	#print sub
-	return sub[:1]
+	return sub
  
 
 # def valid_HTML(urlfile):
