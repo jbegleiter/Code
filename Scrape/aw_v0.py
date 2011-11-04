@@ -31,7 +31,7 @@ def aw_allergy(a_date, zip):
 	utext_sub_dd = utext[sub_start_dd:sub_end_dd]
 
 	dd_value = re.findall(r'(\d+) <span class="ac">out of',utext_sub_dd)
-	allergy_count['dust_dander'] = dd_value
+	allergy_count['dust_dander'] = float(dd_value[0])
 	
 	#Grass Pollen
 	sub_start_gp = utext.index('<h4 class="lt">Grass Pollen</h4>')
@@ -40,8 +40,14 @@ def aw_allergy(a_date, zip):
 	gp_value = re.findall(r'Rating: </span>([\d\s\.]+)<span class="ac">out of 10',utext_sub_gp)
 	allergy_count['grass_pollen'] = float(str(gp_value[0]).strip())
 
-	
+	#Ragweed Pollen
+	sub_start_rp = utext.index('<h4 class="lt">Ragweed Pollen</h4>')
+	sub_end_rp = utext.index('id="pollen-index-3" class="panel-sml health"')
+	utext_sub_rp = utext[sub_start_rp:sub_end_rp]
+	rp_value = re.findall(r'Rating: </span>([\d\s\.]+)<span class="ac">out of 10',utext_sub_rp)
+	allergy_count['ragweed_pollen'] = float(str(rp_value[0]).strip())
 
+	print allergy_count
 	return allergy_count
 
 def aw_respitory(r_date, zip):
