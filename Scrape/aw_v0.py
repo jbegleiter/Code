@@ -16,6 +16,7 @@ def route(label, d_date, z_code):
 
 
 def aw_allergy(a_date, zip):
+	allergy_count = {}
 	geo_info = geo(zip)
 	city = str(geo_info[0][0]).strip().replace(' ','-').lower()
 	state = str(geo_info[0][1]).strip().lower()
@@ -24,12 +25,23 @@ def aw_allergy(a_date, zip):
 	utext = url.read()
 
 	#Dust and Dander
-	sub_start = utext.index('forecast-details.asp?fday=1\' }">')
-	sub_end = utext.index('forecast-details.asp?fday=1" class')
+	sub_start_dd = utext.index('forecast-details.asp?fday=1\' }">')
+	sub_end_dd = utext.index('forecast-details.asp?fday=1" class')
 	#should do till day = 2 to get forecast if the a_date is set to two
-	utext_sub = utext[sub_start:sub_end]
+	utext_sub_dd = utext[sub_start_dd:sub_end_dd]
 
-	allergy_count = re.findall(r'(\d+) <span class="ac">out of',utext_sub)
+	dd_value = re.findall(r'(\d+) <span class="ac">out of',utext_sub_dd)
+	allergy_count['dust_dander'] = dd_value
+	
+	#Grass Pollen
+	sub_start_gp = utext.index('<h4 class="lt">Grass Pollen</h4>')
+	sub_end_gp = utext.index('#pollen-index-2\', strut: \'.comment')
+	utext_sub_gp = utext[sub_start_gp:sub_end_gp]
+	gp_value = re.findall(r'Rating: </span>([\d\s\.]+)<span class="ac">out of 10',utext_sub_gp)
+	allergy_count['grass_pollen'] = float(str(gp_value[0]).strip())
+
+	
+
 	return allergy_count
 
 def aw_respitory(r_date, zip):
